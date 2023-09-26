@@ -21,31 +21,9 @@ const Login = () => {
     });
   };
 
-  // const isEmailValid = (email) => {
-  //   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  //   return emailRegex.test(email);
-  // };
-
-  // const isPasswordValid = (password) => {
-  //   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  //   return passwordRegex.test(password);
-  // };
-
   // submit form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    // if (!isEmailValid(formState.email)) {
-    //   // Handle invalid email
-    //   console.error('Invalid email');
-    //   return;
-    // }
-  
-    // if (!isPasswordValid(formState.password)) {
-    //   // Handle invalid password
-    //   console.error('Invalid password');
-    //   return;
-    // }
 
     try {
       const { data } = await login({
