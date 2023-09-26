@@ -1,6 +1,6 @@
-const gql = require('graphql-tag')
+const gql = require('graphql-tag');
 
-const typeDefs = gql`
+const typeDefs = gql` #graphql
 type User {
   _id: ID
   username: String
