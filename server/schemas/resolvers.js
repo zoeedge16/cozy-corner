@@ -16,6 +16,9 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
+    userPreferences: async (_, { userId }) => {
+      return UserPreferences.find({ userId })
+    },
   },
 
   Mutation: {
@@ -40,7 +43,19 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
-    }
+    },
+    addUserPreferences: async (_, userId, favoriteGenre) => {
+      let userPreferences = await UserPreferences.findOne({ userId });
+
+      if(!userPreferences) {
+          userPreferences = new UserPreferences({ userId, favoriteGenre });
+      } else {
+          userPreferences.favoriteGenre = favoriteGenre;
+      }
+
+      await userPreferences.save();
+      return userPreferences;
+    },
   }
 };
 
