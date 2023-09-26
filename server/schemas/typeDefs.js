@@ -27,11 +27,22 @@ type UserPreferences {
   favoriteGenre: String
 }
 
+type ReadingPreferences{
+    _id: ID
+    booksAYear: Number
+    daysAWeek: Number
+    dayToRead: Text
+    hoursToRead: Number
+    pagesToRead: Number
+    chaptersToRead: Number
+  }
+
 type Query {
   users: [User]
   user(id: ID!): User
   me: User
   userPreferences(userId: String!): UserPreferences
+  readingPreferences(userId: String!): ReadingPreferences
 }
 
 type Mutation {

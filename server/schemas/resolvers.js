@@ -16,6 +16,12 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
+    userPreferences: async (_, { userId }) => {
+      return UserPreferences.find({ userId })
+    },
+    readingPreferences: async (_, { userId }) => {
+      return ReadingPreferences.find({ userId })
+    }
   },
 
   Mutation: {
