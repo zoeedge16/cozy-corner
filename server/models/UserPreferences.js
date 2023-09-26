@@ -12,7 +12,7 @@ const userPreferencesSchema = new Schema ({
     },
     favoriteGenres: {
         type: String,
-        requires: true
+        required: true
     }
 });
 
