@@ -64,7 +64,7 @@ const resolvers = {
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: userId },
-          { $addToSet: { books: book } }, // need to add it to the "want to read list"
+          { $addToSet: { savedBooks: book } }, // need to add it to the "want to read list"
           { new: true, runValidators: true }
         );
       }
@@ -75,7 +75,8 @@ const resolvers = {
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: userId },
-          { $addToSet: { books: book } }, // need this to add to "Already read" list
+          { $pull: { savedBooks: book } },
+          { $addToSet: { readBooks: book } }, // need this to add to "Already read" list
           { new: true, runValidators: true }
         );
       }
@@ -86,7 +87,7 @@ const resolvers = {
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { books: book } },
+          { $pull: { savedBooks: book } },
           { new: true }
         );
       }
