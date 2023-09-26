@@ -1,26 +1,35 @@
-const typeDefs = `#graphql
-  type User {
-    _id: ID
-    username: String
-    email: String
-    password: String
-  }
+const gql = require('graphql-tag')
 
-  type Auth {
-    token: ID!
-    user: User
-  }
+const typeDefs = gql`
+type User {
+  _id: ID
+  username: String
+  email: String
+  password: String
+}
 
-  type Query {
-    users: [User]
-    user(id: ID!): User
-    me: User
-  }
+type Auth {
+  token: ID!
+  user: User
+}
 
-  type Mutation {
-    addUser(email:String!, username:String!, password:String!): Auth
-    login(email:String!, password:String!): Auth
-  }
+type UserPreferences {
+  _id: ID
+  favoriteGenre: String
+}
+
+type Query {
+  users: [User]
+  user(id: ID!): User
+  me: User
+  userPreferences(userId: String!): UserPreferences
+}
+
+type Mutation {
+  addUser(email:String!, username:String!, password:String!): Auth
+  login(email:String!, password:String!): Auth
+  addUserPreference(userId: String!, favoriteGenre: String!): UserPreferences
+}
 `;
 
 module.exports = typeDefs;
