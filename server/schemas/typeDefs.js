@@ -6,6 +6,10 @@ type User {
   username: String
   email: String
   password: String
+  savedBookCount: Int
+  readBookCount: Int
+  savedBooks: [Book]!
+  readBooks: [Book]!
 }
 
 type Book {
@@ -50,8 +54,8 @@ type Mutation {
   login(email:String!, password:String!): Auth
 
   addUserPreference(userId: String!, favoriteGenre: String!): UserPreferences
-  saveBook(profileId: ID!, book: String!): User
-  addToRead(profileId: ID!, book: String!): User
+  saveBook(userId: ID!, book: String!): User
+  addToRead(userId: ID!, book: String!): User
 
   removeBook(book: String!): User
 }
