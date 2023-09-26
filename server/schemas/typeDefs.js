@@ -1,3 +1,5 @@
+const gql = require('graphql-tag');
+
 const typeDefs = `#graphql
   type User {
     _id: ID
