@@ -53,6 +53,40 @@ const resolvers = {
       await userPreferences.save();
       return userPreferences;
     },
+
+    saveBook: async (parent, { userId, book }, context) => {
+      if (context.user) {
+        return User.findOneAndUpdate(
+          { _id: userId },
+          { $addToSet: { books: book } }, // need to add it to the "want to read list"
+          { new: true, runValidators: true }
+        );
+      }
+      throw new AuthenticationError('Not authenticated');
+    },
+
+    addToRead: async (parent, { userId, book }, context) => {
+      if (context.user) {
+        return User.findOneAndUpdate(
+          { _id: userId },
+          { $addToSet: { books: book } }, // need this to add to "Already read" list
+          { new: true, runValidators: true }
+        );
+      }
+      throw new AuthenticationError('Not authenticated');
+    },
+
+    removeBook: async (parent, { book }, context) => {
+      if (context.user) {
+        return User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { books: book } },
+          { new: true }
+        );
+      }
+      throw new AuthenticationError('Not authenticated');
+    },
+
   }
 };
 
