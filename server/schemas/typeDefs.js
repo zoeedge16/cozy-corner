@@ -46,7 +46,7 @@ type Query {
   user(id: ID!): User
   me: User
   userPreferences(userId: String!): UserPreferences
-  readingPreferences(userId: String!): ReadingPreferences
+  readingPreferences(userId: String!): [ReadingPreferences]
 }
 
 type Mutation {
