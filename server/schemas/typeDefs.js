@@ -1,6 +1,4 @@
-const gql = require('graphql-tag');
-
-const typeDefs = gql` #graphql
+const typeDefs = ` #graphql
 type User {
   _id: ID
   username: String
@@ -53,7 +51,7 @@ type Mutation {
   addUser(email:String!, username:String!, password:String!): Auth
   login(email:String!, password:String!): Auth
 
-  addUserPreference(userId: String!, favoriteGenre: String!): UserPreferences
+  addUserPreferences(userId: String!, favoriteGenre: String!): UserPreferences
   saveBook(userId: ID!, book: String!): User
   addToRead(userId: ID!, book: String!): User
 
