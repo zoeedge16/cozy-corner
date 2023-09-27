@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
 import { Container, Nav, Navbar, NavbarBrand } from 'react-bootstrap';
+import logo from '../images/cozy-corner.png';
 
 function Navigation() {
   const logout = (event) => {
@@ -42,7 +43,7 @@ function Navigation() {
         <Container className='d-flex m-2'>
             <NavbarBrand>
                 <Link to='/'>
-                    <h2 className="nav-logo fw-bold fs-3">Cozy Corner</h2>
+                     <img src={logo} alt="logo" className='img-fluid' />
                 </Link>
             </NavbarBrand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
