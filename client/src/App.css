@@ -123,3 +123,17 @@
 .signup-link {
   cursor: pointer;
 }
+
+.profile-container {
+  background-color: #D3D5D4;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+#avatar {
+  height: 100px;
+  width: 100px;
+  border-radius: 50px;
+}

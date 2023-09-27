@@ -6,6 +6,8 @@ import Auth from '../utils/auth';
 import { QUERY_USERS, QUERY_USER, QUERY_ME } from '../utils/queries';
 // Components
 import UserList from '../components/UserList';
+import { Col, Container, Row } from 'react-bootstrap';
+import avatar from '../images/profile-avatar.webp'
 
 const Profile = () => {
   const { id } = useParams();
@@ -51,17 +53,24 @@ const Profile = () => {
   const renderCurrentUserInfo = () => {
     if (id) return null;
     return (
-      <ul>
-        <li>username: {user.username}</li>
-        <li>email: {user.email}</li>
-      </ul>
+      <Container className='profile-container'>
+        <Row className='justify-content-center'>
+          <Col xs={12} md={6}>
+            <img src={avatar} alt="avatar" id='avatar' />
+            <ul>
+              <li>username: {user.username}</li>
+              <li>email: {user.email}</li>
+            </ul>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 
   return (
     <div>
       <div>
-        <h2>
+        <h2 className='login-header'>
           Viewing {id ? `${user.username}'s` : 'your'} profile.
         </h2>
         {renderCurrentUserInfo()}
