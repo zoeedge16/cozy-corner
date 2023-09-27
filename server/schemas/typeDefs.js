@@ -33,12 +33,12 @@ type UserPreferences {
 
 type ReadingPreferences{
     _id: ID
-    booksAYear: Number
-    daysAWeek: Number
-    dayToRead: Text
-    hoursToRead: Number
-    pagesToRead: Number
-    chaptersToRead: Number
+    booksAYear: Int
+    daysAWeek: Int
+    dayToRead: String
+    hoursToRead: Int
+    pagesToRead: Int
+    chaptersToRead: Int
   }
 
 type Query {
