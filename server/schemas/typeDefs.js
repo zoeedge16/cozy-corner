@@ -33,12 +33,12 @@ type UserPreferences {
 
 type ReadingPreferences{
     _id: ID
-    booksAYear: Number
-    daysAWeek: Number
-    dayToRead: Text
-    hoursToRead: Number
-    pagesToRead: Number
-    chaptersToRead: Number
+    booksAYear: Int
+    daysAWeek: Int
+    dayToRead: String
+    hoursToRead: Int
+    pagesToRead: Int
+    chaptersToRead: Int
   }
 
 type Query {
@@ -46,7 +46,7 @@ type Query {
   user(id: ID!): User
   me: User
   userPreferences(userId: String!): UserPreferences
-  readingPreferences(userId: String!): ReadingPreferences
+  readingPreferences(userId: String!): [ReadingPreferences]
 }
 
 type Mutation {
