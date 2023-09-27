@@ -16,7 +16,7 @@ const readingPreferences = new Schema ({
         required: true
     },
     dayToRead: {
-        type: Text,
+        type: String,
         required: true
     },
     hoursToRead: {
