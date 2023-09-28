@@ -16,7 +16,7 @@ function Navigation() {
         <Container className='d-flex m-2'>
             <NavbarBrand>
                 <Link to='/'>
-                    <h2 className="nav-logo fw-bold fs-3">Cozy Corner</h2>
+                  <img src={logo} alt="logo" className='img-fluid logo-img' />
                 </Link>
             </NavbarBrand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -43,7 +43,7 @@ function Navigation() {
         <Container className='d-flex m-2'>
             <NavbarBrand>
                 <Link to='/'>
-                     <img src={logo} alt="logo" className='img-fluid' />
+                  <img src={logo} alt="logo" className='img-fluid logo-img' />
                 </Link>
             </NavbarBrand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
