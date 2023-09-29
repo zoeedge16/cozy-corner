@@ -97,7 +97,7 @@ const Profile = () => {
     }
   
     const userData = data?.me || {};
-    const savedBooksData = userData.savedBooks || [];  // Ensure savedBooksData is an array
+    const savedBooksData = userData.savedBooks || [];  
   
     return (
       <>
@@ -141,19 +141,73 @@ const Profile = () => {
       </>
     );
   };
+
+  const readBooks = () => {
+    if (loading) {
+      return <h2>LOADING...</h2>;
+    }
+  
+    const userData = data?.me || {};
+    const readBooksData = userData.readBooks || [];  
+  
+    return (
+      <>
+        <div>
+          <Container>
+            <h2 className='login-header'>Books I've Read:</h2>
+          </Container>
+        </div>
+        <Container className='profile-container'>
+          <h2 className='pt-5'>
+            {readBooksData.length
+              ? `Viewing ${readBooksData.length} Read ${readBooksData.length === 1 ? 'book' : 'books'}:`
+              : 'You have not read any books!'}
+          </h2>
+          <CardGroup>
+            {readBooksData.map((book) => {
+              return (
+                <Card key={book.bookId}>
+                  <Card.Img variant="top" src={book.image} />
+                  <Card.Body>
+                    <Card.Title>{book.title}</Card.Title>
+                    <Card.Text>{book.description}</Card.Text>
+                  </Card.Body>
+                  <Card.Footer className='d-flex justify-content-between'>
+                    <div>
+                      <Button className='btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
+                        Remove
+                      </Button>
+                    </div>
+                    <div>
+                      <Button className='btn-success' onClick={() => handleDeleteBook(book.bookId)}>
+                        I read this book
+                      </Button>
+                    </div>
+                  </Card.Footer>
+                </Card>
+              );
+            })}
+          </CardGroup>
+        </Container>
+      </>
+    );
+  };
   
 
   return (
     <div>
       <div>
         <h2 className='login-header'>
-          Viewing {id ? `${user.username}'s` : 'your'} profile.
+          Viewing {id ? `${user.username}'s` : 'your'} Profile.
         </h2>
         {renderCurrentUserInfo()}
         {renderUserList()}
       </div>
       <div>
         {savedBooks()}
+      </div>
+      <div>
+        {readBooks()}
       </div>
     </div>
   );
