@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
-import { Container, Nav, Navbar, NavbarBrand } from 'react-bootstrap';
+import { Container, Nav, Navbar, NavbarBrand, Form, Button, Dropdown } from 'react-bootstrap';
 import logo from '../images/cozy-corner.png';
+import { useState } from 'react';
 
 function Navigation() {
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('Any Category');
+
   const logout = (event) => {
     event.preventDefault();
     Auth.logout();
@@ -30,6 +34,25 @@ function Navigation() {
                         <Link to='/login' onClick={logout} className='m-2 p-2'>Logout</Link>
                     </Container>
                 </Nav>
+                <Form className="d-flex">
+                  <Dropdown data-bs-theme="dark">
+                    <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
+                      Any Category
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu className='dropdown-menu'>
+                      <Dropdown.Item>Search by book</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                
+                  <Form.Control
+                    type="search"
+                    placeholder="Search"
+                    className="me-2"
+                    aria-label="Search"
+                  />
+                  <Button variant="outline-success">Search</Button>
+                </Form>
             </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -54,6 +77,24 @@ function Navigation() {
                         <Link to='/login' className='m-2 p-2'>Login</Link>
                     </Container>
                 </Nav>
+                <Form className="d-flex">
+                  <Dropdown data-bs-theme="dark">
+                    <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
+                      Any Category
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu className='dropdown-menu'>
+                      <Dropdown.Item>Search by book</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  <Form.Control
+                    type="search"
+                    placeholder="Search"
+                    className="me-2"
+                    aria-label="Search"
+                  />
+                  <Button className="search-btn">Search</Button>
+                </Form>
             </Navbar.Collapse>
         </Container>
       </Navbar>

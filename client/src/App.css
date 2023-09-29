@@ -142,3 +142,18 @@
   height: 110px;
   width: 110px;
 }
+
+.search-btn {
+  border: solid #9DB5B2 !important;
+  background-color: white !important;
+  color: #9DB5B2 !important;
+}
+
+.search-btn:hover {
+  background-color: #9DB5B2 !important;
+  color: white !important;
+}
+
+.dropdown-menu {
+  background-color: #D3D5D4 !important;
+}
