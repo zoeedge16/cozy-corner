@@ -5,8 +5,6 @@ function ReadingPreferencesPage() {
     const [daysPerWeek, setDaysPerWeek] = useState(0);
     const [readDay, setReadDay] = useState(0);
     const [hoursPerDay, setHoursPerDay] = useState(0);
-    const [pagesPerDay, setPagesPerDay] = useState(0);
-    const [chaptersPerDay, setChaptersPerDay] = useState(0);
     const [startTime, setStartTime] = useState('');
 
     const handleFormSubmit = (e) => {
@@ -16,8 +14,6 @@ function ReadingPreferencesPage() {
             daysPerWeek,
             readDay,
             hoursPerDay,
-            pagesPerDay,
-            chaptersPerDay,
             startTime,
         });
     };
@@ -62,26 +58,6 @@ function ReadingPreferencesPage() {
                     type="number"
                     value="hoursPerDay"
                     onChange={(e) => setHoursPerDay(e.target.value)}
-                    />
-                </label>
-                <br />
-
-                <label>
-                    How many pages would you like to read per day?
-                    <input
-                    type="number"
-                    value={pagesPerDay}
-                    onChange={(e) => setPagesPerDay(e.target.value)}
-                    />
-                </label>
-                <br />
-
-                <label>
-                    How many chapters would you like to read per day?
-                    <input 
-                    type="number"
-                    value={chaptersPerDay}
-                    onChange={(e) => setChaptersPerDay(e.target.value)}
                     />
                 </label>
                 <br />
