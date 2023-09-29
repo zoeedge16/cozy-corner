@@ -3,10 +3,44 @@ import Auth from '../utils/auth';
 import { Container, Nav, Navbar, NavbarBrand, Form, Button, Dropdown } from 'react-bootstrap';
 import logo from '../images/cozy-corner.png';
 import { useState } from 'react';
+import { searchGoogleBooks } from '../utils/API';
 
 function Navigation() {
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('Any Category');
+  const [searchBooks, setSearchBooks] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  // const [category, setCategory] = useState('Any Category');
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!searchInput) {
+      return false;
+    }
+
+    try {
+      const response = await searchGoogleBooks(searchInput);
+
+      if (!response.ok) {
+        throw new Error('something went wrong!');
+      }
+
+      const { items } = await response.json();
+
+      const bookData = items.map((book) => ({
+        bookId: book.id,
+        authors: book.volumeInfo.authors || ['No author to display'],
+        title: book.volumeInfo.title,
+        description: book.volumeInfo.description,
+        image: book.volumeInfo.imageLinks?.thumbnail || '',
+        link: book.volumeInfo.infoLink,
+      }));
+
+      setSearchBooks(bookData);
+      setSearchInput('');
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const logout = (event) => {
     event.preventDefault();
@@ -34,7 +68,7 @@ function Navigation() {
                         <Link to='/login' onClick={logout} className='m-2 p-2'>Logout</Link>
                     </Container>
                 </Nav>
-                <Form className="d-flex">
+                <Form className="d-flex" onSubmit={handleFormSubmit}>
                   <Dropdown data-bs-theme="dark">
                     <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
                       Any Category
@@ -48,8 +82,11 @@ function Navigation() {
                   <Form.Control
                     type="search"
                     placeholder="Search"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                     className="me-2"
                     aria-label="Search"
+                    name='searchInput'
                   />
                   <Button variant="outline-success">Search</Button>
                 </Form>
@@ -77,7 +114,7 @@ function Navigation() {
                         <Link to='/login' className='m-2 p-2'>Login</Link>
                     </Container>
                 </Nav>
-                <Form className="d-flex">
+                <Form className="d-flex" onSubmit={handleFormSubmit}>
                   <Dropdown data-bs-theme="dark">
                     <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
                       Any Category
@@ -90,8 +127,11 @@ function Navigation() {
                   <Form.Control
                     type="search"
                     placeholder="Search"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                     className="me-2"
                     aria-label="Search"
+                    name='searchInput'
                   />
                   <Button className="search-btn">Search</Button>
                 </Form>
