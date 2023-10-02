@@ -39,6 +39,12 @@ type ReadingPreferences{
     chaptersToRead: Int
   }
 
+  type Post {
+    id: ID!
+    content: String!
+    time: String!
+  }
+
 type Query {
   users: [User]
   user(id: ID!): User
@@ -54,6 +60,7 @@ type Mutation {
   addUserPreferences(userId: String!, favoriteGenre: String!): UserPreferences
   saveBook(userId: ID!, book: String!): User
   addToRead(userId: ID!, book: String!): User
+  createPost(content: String!): Post
 
   removeBook(book: String!): User
 }

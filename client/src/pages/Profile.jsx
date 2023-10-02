@@ -1,16 +1,46 @@
-// Node Modules
-import { Navigate, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-// Utilities
-import Auth from '../utils/auth';
+import { useParams } from 'react-router-dom';
 import { QUERY_USERS, QUERY_USER, QUERY_ME } from '../utils/queries';
-import { REMOVE_BOOK } from '../utils/mutations';
-import { removeBookId } from '../utils/localStorage';
-
-// Components
+import { REMOVE_BOOK, CREATE_POST } from '../utils/mutations';
 import UserList from '../components/UserList';
-import { Col, Container, Row, Card, CardGroup, Button } from 'react-bootstrap';
+import { Col, Container, Row, Card, CardGroup, Button, Form } from 'react-bootstrap';
 import avatar from '../images/profile-avatar.webp';
+
+const PostSection = ({ 
+  handlePostContentChange, 
+  postContent, 
+  handlePostSubmit, 
+}) => {
+  return (
+    <div>
+      <h2 className='login-header'>Create a Post:</h2>
+      <Form>
+        <Form.Group className='mb-3' controlId='exampleForm.ControlTextarea1'>
+          <Form.Label>Post Content</Form.Label>
+          <Form.Control
+            as='textarea'
+            rows={5}
+            value={postContent}
+            onChange={handlePostContentChange}
+            placeholder='Write your post here...'
+          />
+        </Form.Group>
+        <Button variant='primary' onClick={handlePostSubmit}>
+          Post
+        </Button>
+      </Form>
+
+      <h2 className='login-header'>Posts:</h2>
+      {postsArray.map((post, index) => (
+        <div key={index} className='post'>
+          <p>{post.content}</p>
+          <p>Posted at: {post.time}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const Profile = () => {
   const { id } = useParams();
@@ -21,33 +51,46 @@ const Profile = () => {
 
   const { usersLoading, data: usersData } = useQuery(QUERY_USERS);
   const [removeBookMutation] = useMutation(REMOVE_BOOK);
+  const [createPostMutation] = useMutation(CREATE_POST);
+
   const user = data?.me || data?.user || {};
   const users = usersData?.users || {};
 
+  const [postContent, setPostContent] = useState('');
+  const [posts, setPosts] = useState('');
+  const [textareaContent, setTextareaContent] = useState('');
+
+  const handlePostContentChange = (event) => {
+    setPostContent(event.target.value);
+  };
+
+  const handlePostSubmit = async () => {
+    try {
+      const { data } = await createPostMutation({
+        variables: { content: postContent },
+      });
+
+      if (data) {
+        const newPost = data.createPost;
+        setPosts([...posts, newPost]);
+        setPostContent('');
+      }
+    } catch (error) {
+      console.error('Error creating post:', error.message);
+    }
+  };
+
+  const handleTextareaChange = (event) => {
+    setTextareaContent(event.target.value);
+  };
+
   if (error) console.log(error);
-
-  if (Auth.loggedIn() && Auth.getProfile().data._id === id) {
-    return <Navigate to="/me" replace />;
-  }
-
-  if (loading) {
-    return <h4>Loading...</h4>;
-  }
-
-  if (!user?.username) {
-    return (
-      <h4>
-        You need to be logged in to see this. Use the navigation links above to
-        sign up or log in!
-      </h4>
-    );
-  }
 
   const renderUserList = () => {
     if (usersLoading || !Array.isArray(usersData?.users)) {
       return null;
     }
-  
+
     const notMeUsers = usersData.users.filter((o) => o._id !== user._id);
     return <UserList users={notMeUsers} title="User List" />;
   };
@@ -69,7 +112,6 @@ const Profile = () => {
       </Container>
     );
   };
-
 
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -95,10 +137,10 @@ const Profile = () => {
     if (loading) {
       return <h2>LOADING...</h2>;
     }
-  
+
     const userData = data?.me || {};
-    const savedBooksData = userData.savedBooks || [];  
-  
+    const savedBooksData = userData.savedBooks || [];
+
     return (
       <>
         <div>
@@ -109,26 +151,34 @@ const Profile = () => {
         <Container className='profile-container'>
           <h2 className='pt-5'>
             {savedBooksData.length
-              ? `Viewing ${savedBooksData.length} Want to Read ${savedBooksData.length === 1 ? 'book' : 'books'}:`
+              ? `Viewing ${savedBooksData.length} Want to Read ${
+                  savedBooksData.length === 1 ? 'book' : 'books'
+                }:`
               : 'You have not saved any books to your Want To Read list!'}
           </h2>
           <CardGroup>
             {savedBooksData.map((book) => {
               return (
                 <Card key={book.bookId}>
-                  <Card.Img variant="top" src={book.image} />
+                  <Card.Img variant='top' src={book.image} />
                   <Card.Body>
                     <Card.Title>{book.title}</Card.Title>
                     <Card.Text>{book.description}</Card.Text>
                   </Card.Body>
                   <Card.Footer className='d-flex justify-content-between'>
                     <div>
-                      <Button className='btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
+                      <Button
+                        className='btn-danger'
+                        onClick={() => handleDeleteBook(book.bookId)}
+                      >
                         Remove
                       </Button>
                     </div>
                     <div>
-                      <Button className='btn-success' onClick={() => handleDeleteBook(book.bookId)}>
+                      <Button
+                        className='btn-success'
+                        onClick={() => handleDeleteBook(book.bookId)}
+                      >
                         I read this book
                       </Button>
                     </div>
@@ -146,10 +196,10 @@ const Profile = () => {
     if (loading) {
       return <h2>LOADING...</h2>;
     }
-  
+
     const userData = data?.me || {};
-    const readBooksData = userData.readBooks || [];  
-  
+    const readBooksData = userData.readBooks || [];
+
     return (
       <>
         <div>
@@ -160,26 +210,34 @@ const Profile = () => {
         <Container className='profile-container'>
           <h2 className='pt-5'>
             {readBooksData.length
-              ? `Viewing ${readBooksData.length} Read ${readBooksData.length === 1 ? 'book' : 'books'}:`
+              ? `Viewing ${readBooksData.length} Read ${
+                  readBooksData.length === 1 ? 'book' : 'books'
+                }:`
               : 'You have not read any books!'}
           </h2>
           <CardGroup>
             {readBooksData.map((book) => {
               return (
                 <Card key={book.bookId}>
-                  <Card.Img variant="top" src={book.image} />
+                  <Card.Img variant='top' src={book.image} />
                   <Card.Body>
                     <Card.Title>{book.title}</Card.Title>
                     <Card.Text>{book.description}</Card.Text>
                   </Card.Body>
                   <Card.Footer className='d-flex justify-content-between'>
                     <div>
-                      <Button className='btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
+                      <Button
+                        className='btn-danger'
+                        onClick={() => handleDeleteBook(book.bookId)}
+                      >
                         Remove
                       </Button>
                     </div>
                     <div>
-                      <Button className='btn-success' onClick={() => handleDeleteBook(book.bookId)}>
+                      <Button
+                        className='btn-success'
+                        onClick={() => handleDeleteBook(book.bookId)}
+                      >
                         I read this book
                       </Button>
                     </div>
@@ -192,7 +250,7 @@ const Profile = () => {
       </>
     );
   };
-  
+
 
   return (
     <div>
@@ -208,6 +266,16 @@ const Profile = () => {
       </div>
       <div>
         {readBooks()}
+      </div>
+      <div>
+        <PostSection
+          handlePostContentChange={handlePostContentChange}
+          postContent={postContent}
+          handlePostSubmit={handlePostSubmit}
+          posts={posts}
+          handleTextareaChange={handleTextareaChange}
+          textareaContent={textareaContent}
+        />
       </div>
     </div>
   );
