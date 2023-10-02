@@ -88,7 +88,7 @@ function Navigation() {
                     aria-label="Search"
                     name='searchInput'
                   />
-                  <Button variant="outline-success">Search</Button>
+                  <Button type="submit" variant="outline-success">Search</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>
@@ -133,7 +133,7 @@ function Navigation() {
                     aria-label="Search"
                     name='searchInput'
                   />
-                  <Button className="search-btn">Search</Button>
+                  <Button type="submit" className="search-btn">Search</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>
