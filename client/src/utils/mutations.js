@@ -71,3 +71,13 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+export const CREATE_POST = gql`
+  mutation createPost($content: String!) {
+    createPost(content: $content) {
+      id
+      content
+      time
+    }
+  }
+`;

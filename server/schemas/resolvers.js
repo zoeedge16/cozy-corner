@@ -83,6 +83,12 @@ const resolvers = {
       throw new AuthenticationError('Not authenticated');
     },
 
+    createPost: async (_, { content }, context) => {
+      const time = new Date().toISOString();
+      const newPost = { id: 'some-unique-id', content, time };
+      return newPost;
+    },
+
     removeBook: async (parent, { book }, context) => {
       if (context.user) {
         return User.findOneAndUpdate(
