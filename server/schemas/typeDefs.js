@@ -31,12 +31,9 @@ type UserPreferences {
 
 type ReadingPreferences{
     _id: ID
-    booksAYear: Int
-    daysAWeek: Int
-    dayToRead: String
-    hoursToRead: Int
-    pagesToRead: Int
-    chaptersToRead: Int
+    totalPages: Int!
+    daysToRead: Int!
+    dailyPageGoal: Int!
   }
 
   type Post {
