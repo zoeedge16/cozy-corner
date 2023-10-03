@@ -6,7 +6,7 @@ import { REMOVE_BOOK, CREATE_POST } from '../utils/mutations';
 import CommentSection from '../components/CommentSection';
 import { Col, Container, Row, Card, CardGroup, Button, Form } from 'react-bootstrap';
 import avatar from '../images/profile-avatar.webp';
-impo
+
 
 const PostSection = ({ handlePostContentChange, postContent, handlePostSubmit, posts }) => {
   const [showCommentBox, setShowCommentBox] = useState(false);
