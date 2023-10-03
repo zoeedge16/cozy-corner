@@ -7,6 +7,8 @@ import CommentSection from '../components/CommentSection';
 import { Col, Container, Row, Card, CardGroup, Button, Form } from 'react-bootstrap';
 import avatar from '../images/profile-avatar.webp';
 
+import Auth from '../utils/auth';
+
 
 const PostSection = ({ handlePostContentChange, postContent, handlePostSubmit, posts }) => {
   const [showCommentBox, setShowCommentBox] = useState(false);
@@ -256,6 +258,23 @@ const Profile = () => {
     );
   };
 
+  // Use React Router's `<Navigate />` component to redirect to personal profile page if username is yours
+  if (Auth.loggedIn() && Auth.getUser().data._id === userId) {
+    return <Navigate to="/me" />;
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user?.name) {
+    return (
+      <h4>
+        You need to be logged in to see your profile page. Use the navigation
+        links above to sign up or log in!
+      </h4>
+    );
+  }
 
   return (
     <div>
