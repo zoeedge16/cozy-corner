@@ -4,11 +4,11 @@ import { Navigate, useParams } from 'react-router-dom';
 import { QUERY_USERS, QUERY_USER, QUERY_ME } from '../utils/queries';
 import { REMOVE_BOOK, CREATE_POST } from '../utils/mutations';
 import CommentSection from '../components/CommentSection';
-import { Col, Container, Row, Card, CardGroup, Button, Form } from 'react-bootstrap';
-import avatar from '../images/profile-avatar.webp';
+import { Col, Container, Row, Card, CardGroup, Button, Form, } from 'react-bootstrap';
+import picture from '../images/cozy-corner-user.jpg';
+import { Link } from 'react-router-dom';
 
 import Auth from '../utils/auth';
-
 
 const PostSection = ({ handlePostContentChange, postContent, handlePostSubmit, posts }) => {
   const [showCommentBox, setShowCommentBox] = useState(false);
@@ -285,11 +285,11 @@ const Profile = () => {
       <Container className='profile-container'>
         <Row className='justify-content-center'>
           <Col xs={12} md={6}>
-            <img src={avatar} alt="avatar" id='avatar' />
-            <ul>
-              <li>username: {user.username}</li>
+            <h2 className='login-header'>Profile</h2>
+            <img src={picture} alt="avatar" id='avatar' />
+            <li>username: {user.username}</li>
               <li>email: {user.email}</li>
-            </ul>
+              <li><Link to="/reading-preferences">Manage Reading Preferences</Link></li>
           </Col>
         </Row>
       </Container>

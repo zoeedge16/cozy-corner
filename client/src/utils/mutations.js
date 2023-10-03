@@ -12,18 +12,28 @@ export const LOGIN_USER = gql`
   }
 `;
 
+// export const SAVE_BOOK = gql`
+//   mutation saveBook($authors: [String], $description: String!, $bookId: String!, $image: String, $title: String!, $userId: ID!) {
+//     saveBook(authors: $authors, description: $description, bookId: $bookId, image: $image, title: $title, userId: $userId) {
+//       _id
+//       username
+//       savedBooks {
+//         authors
+//         description
+//         bookId
+//         image
+//         title
+//       }
+//     }
+//   }
+// `;
+
 export const SAVE_BOOK = gql`
-  mutation saveBook($authors: [String], $description: String!, $bookId: String!, $image: String, $title: String!, $userId: ID!) {
-    saveBook(authors: $authors, description: $description, bookId: $bookId, image: $image, title: $title, userId: $userId) {
+  mutation saveBook($userId: ID!, $book: String!) {
+    saveBook(userId: $userId, book: $book) {
       _id
-      username
-      savedBooks {
-        authors
-        description
-        bookId
-        image
-        title
-      }
+      name
+      books
     }
   }
 `;
