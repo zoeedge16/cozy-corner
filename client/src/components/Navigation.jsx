@@ -2,13 +2,20 @@ import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
 import { Container, Nav, Navbar, NavbarBrand, Form, Button, Dropdown } from 'react-bootstrap';
 import logo from '../images/cozy-corner.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { searchGoogleBooks } from '../utils/API';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Navigation() {
   const [searchBooks, setSearchBooks] = useState('');
   const [searchInput, setSearchInput] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
   // const [category, setCategory] = useState('Any Category');
+
+  useEffect(() => {
+    setSearchInput(new URLSearchParams(location.search).get('query') || '');
+  },[location.search]);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -19,6 +26,8 @@ function Navigation() {
 
     try {
       const response = await searchGoogleBooks(searchInput);
+
+      console.log(response);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -37,6 +46,8 @@ function Navigation() {
 
       setSearchBooks(bookData);
       setSearchInput('');
+
+      navigate(`/search-results?query=${searchInput}`)
     } catch (err) {
       console.error(err);
     }
@@ -68,7 +79,7 @@ function Navigation() {
                         <Link to='/login' onClick={logout} className='m-2 p-2'>Logout</Link>
                     </Container>
                 </Nav>
-                <Form className="d-flex" onSubmit={handleFormSubmit}>
+                <Form className="d-flex">
                   <Dropdown data-bs-theme="dark">
                     <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
                       Any Category
@@ -88,7 +99,7 @@ function Navigation() {
                     aria-label="Search"
                     name='searchInput'
                   />
-                  <Button variant="outline-success">Search</Button>
+                   <Button type="submit" className="search-btn" onClick={handleFormSubmit}>Search</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>
@@ -114,7 +125,7 @@ function Navigation() {
                         <Link to='/login' className='m-2 p-2'>Login</Link>
                     </Container>
                 </Nav>
-                <Form className="d-flex" onSubmit={handleFormSubmit}>
+                <Form className="d-flex">
                   <Dropdown data-bs-theme="dark">
                     <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
                       Any Category
@@ -133,7 +144,7 @@ function Navigation() {
                     aria-label="Search"
                     name='searchInput'
                   />
-                  <Button className="search-btn">Search</Button>
+                  <Button type="submit" className="search-btn" onClick={handleFormSubmit}>Search</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>

@@ -1,3 +1,5 @@
+const apiKey = 'AIzaSyArZOGWlXci67CNqCYxwddp-mNkoB7xiwQ'
+
 export const saveBook  = (bookData, token) => {
     return fetch ('/api/users', {
         method: 'PUT',
@@ -19,7 +21,7 @@ export const deleteBook = (bookId, token) => {
 }
 
 export const searchGoogleBooks = (query) => {
-    return fetch(`https://books.google.com/books/v1/volumes?q=${query}`)
+    return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${apiKey}`)
 }
 
 // implement this later when we have the core functionality done
