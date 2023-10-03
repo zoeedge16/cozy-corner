@@ -40,6 +40,7 @@ type ReadingPreferences{
     id: ID
     content: String!
     time: String!
+    comments: [Comment]
   }
 
   type Comment {
@@ -65,7 +66,6 @@ type Mutation {
   addToRead(userId: ID!, book: String!): User
   createPost(content: String!): Post
   createComment(postId: ID!, content: String!): Comment
-
   removeBook(book: String!): User
 }
 `;

@@ -38,17 +38,15 @@ const PostSection = ({ handlePostContentChange, postContent, handlePostSubmit, p
         <Card key={index} className='post-container mb-3 d-flex justify-content-between'>
           <Card.Body>
             <div className="d-flex flex-column align-items-start">
-              <Card.Text className='h4'>{post.content}</Card.Text>
-              <Card.Text className="text-muted">Posted at: {post.formattedCreatedAt}</Card.Text>
+              <Card.Text className='h4 mb-4'>{post.content}</Card.Text>
             </div>
             <Button
-              variant="primary"
-              className="search-btn ml-auto"
+              className="search-btn d-flex justify-content-start ml-auto mt-3 mb-4"
               onClick={() => handleToggleCommentBox(post.id)}
             >
               Comment
             </Button>
-            {showCommentBox && commentPostId === post.id && <CommentSection postId={post.id} />}
+            {showCommentBox && commentPostId === post.id && <CommentSection postId={commentPostId} />}
           </Card.Body>
         </Card>
       ))}
