@@ -11,7 +11,6 @@ function Navigation() {
   const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-  // const [category, setCategory] = useState('Any Category');
 
   useEffect(() => {
     setSearchInput(new URLSearchParams(location.search).get('query') || '');
@@ -26,8 +25,6 @@ function Navigation() {
 
     try {
       const response = await searchGoogleBooks(searchInput);
-
-      console.log(response);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -80,16 +77,6 @@ function Navigation() {
                     </Container>
                 </Nav>
                 <Form className="d-flex">
-                  <Dropdown data-bs-theme="dark">
-                    <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
-                      Any Category
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu className='dropdown-menu'>
-                      <Dropdown.Item>Search by book</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                
                   <Form.Control
                     type="search"
                     placeholder="Search"
@@ -119,22 +106,13 @@ function Navigation() {
             </NavbarBrand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-2 d-flex justify-content-between">
+                <Nav className="me-2 d-flex justify-content-end">
                     <Container className="d-flex justify-content-end align-items-center">
                         <Link to='/' className='m-2 p-2'>Home</Link>
                         <Link to='/login' className='m-2 p-2'>Login</Link>
                     </Container>
                 </Nav>
                 <Form className="d-flex">
-                  <Dropdown data-bs-theme="dark">
-                    <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
-                      Any Category
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu className='dropdown-menu'>
-                      <Dropdown.Item>Search by book</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
                   <Form.Control
                     type="search"
                     placeholder="Search"

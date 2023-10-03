@@ -157,3 +157,14 @@
 .dropdown-menu {
   background-color: #D3D5D4 !important;
 }
+
+.card-img {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.card-btn {
+  background-color: #9DB5B2 !important;
+  border: none !important;
+}
