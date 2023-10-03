@@ -20,6 +20,30 @@ export const deleteBook = (bookId, token) => {
     });
 }
 
+// API for adding post
+export const addPost  = (postData, token) => {
+    return fetch ('/api/posts', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application.json',
+            authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(postData)
+    })
+};
+
+// API for adding a comment on a post
+export const addComment = (postId, commentData, token) => {
+    return fetch(`/api/posts/${postId}/comments`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(commentData)
+    });
+};
+
 export const searchGoogleBooks = (query) => {
     return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${apiKey}`)
 }

@@ -10,14 +10,14 @@ import avatar from '../images/profile-avatar.webp';
 const PostSection = ({ 
   handlePostContentChange, 
   postContent, 
-  handlePostSubmit, 
+  handlePostSubmit,
+  posts 
 }) => {
   return (
-    <div>
+    <Container>
       <h2 className='login-header'>Create a Post:</h2>
       <Form>
         <Form.Group className='mb-3' controlId='exampleForm.ControlTextarea1'>
-          <Form.Label>Post Content</Form.Label>
           <Form.Control
             as='textarea'
             rows={5}
@@ -32,13 +32,15 @@ const PostSection = ({
       </Form>
 
       <h2 className='login-header'>Posts:</h2>
-      {postsArray.map((post, index) => (
-        <div key={index} className='post'>
-          <p>{post.content}</p>
-          <p>Posted at: {post.time}</p>
-        </div>
+      {posts.map((post, index) => (
+        <Card key={index} className='post-container mb-3'>
+          <Card.Body>
+            <Card.Text>{post.content}</Card.Text>
+            <Card.Text>Posted at: {post.formattedCreatedAt}</Card.Text>
+          </Card.Body>
+        </Card>
       ))}
-    </div>
+    </Container>
   );
 };
 
@@ -57,7 +59,7 @@ const Profile = () => {
   const users = usersData?.users || {};
 
   const [postContent, setPostContent] = useState('');
-  const [posts, setPosts] = useState('');
+  const [posts, setPosts] = useState([]);
   const [textareaContent, setTextareaContent] = useState('');
 
   const handlePostContentChange = (event) => {
@@ -72,7 +74,7 @@ const Profile = () => {
 
       if (data) {
         const newPost = data.createPost;
-        setPosts([...posts, newPost]);
+        setPosts(prevPosts => [...prevPosts, newPost]); // Update posts state
         setPostContent('');
       }
     } catch (error) {
@@ -273,8 +275,6 @@ const Profile = () => {
           postContent={postContent}
           handlePostSubmit={handlePostSubmit}
           posts={posts}
-          handleTextareaChange={handleTextareaChange}
-          textareaContent={textareaContent}
         />
       </div>
     </div>

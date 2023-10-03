@@ -1,27 +1,19 @@
 const { AuthenticationError } = require('@apollo/server');
-const { User } = require('../models');
+const { User, UserPreferences, ReadingPreferences } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    users: async () => {
-      return User.find();
-    },
-    user: async (_, args) => {
-      return User.findOne({ _id: args.id });
-    },
-    me: async (_, args, context) => {
+    users: async () => User.find(),
+    user: async (_, { id }) => User.findOne({ _id: id }),
+    me: async (_, __, context) => {
       if (context.user) {
         return User.findOne({ _id: context.user._id });
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    userPreferences: async (_, { userId }) => {
-      return UserPreferences.find({ userId })
-    },
-    readingPreferences: async (_, { userId }) => {
-      return ReadingPreferences.find({ userId })
-    }
+    userPreferences: async (_, { userId }) => UserPreferences.find({ userId }),
+    readingPreferences: async (_, { userId }) => ReadingPreferences.find({ userId })
   },
 
   Mutation: {
@@ -47,36 +39,35 @@ const resolvers = {
 
       return { token, user };
     },
-    addUserPreferences: async (_, userId, favoriteGenre) => {
+    addUserPreferences: async (_, { userId, favoriteGenre }) => {
       let userPreferences = await UserPreferences.findOne({ userId });
 
-      if(!userPreferences) {
-          userPreferences = new UserPreferences({ userId, favoriteGenre });
+      if (!userPreferences) {
+        userPreferences = new UserPreferences({ userId, favoriteGenre });
       } else {
-          userPreferences.favoriteGenre = favoriteGenre;
+        userPreferences.favoriteGenre = favoriteGenre;
       }
 
       await userPreferences.save();
       return userPreferences;
     },
 
-    saveBook: async (parent, { userId, book }, context) => {
+    saveBook: async (_, { userId, book }, context) => {
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: userId },
-          { $addToSet: { savedBooks: book } }, // need to add it to the "want to read list"
+          { $addToSet: { savedBooks: book } },
           { new: true, runValidators: true }
         );
       }
       throw new AuthenticationError('Not authenticated');
     },
 
-    addToRead: async (parent, { userId, book }, context) => {
+    addToRead: async (_, { userId, book }, context) => {
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: userId },
-          { $pull: { savedBooks: book } },
-          { $addToSet: { readBooks: book } }, // need this to add to "Already read" list
+          { $pull: { savedBooks: book }, $addToSet: { readBooks: book } },
           { new: true, runValidators: true }
         );
       }
@@ -84,12 +75,16 @@ const resolvers = {
     },
 
     createPost: async (_, { content }, context) => {
-      const time = new Date().toISOString();
-      const newPost = { id: 'some-unique-id', content, time };
-      return newPost;
-    },
+      if (context.user) {
+        const { userId } = context;
+        const time = new Date().toISOString();
+        const newPost = { id: userId, content, time };
+        return newPost;
+      }
+      throw new AuthenticationError('Not authenticated');
+    }, 
 
-    removeBook: async (parent, { book }, context) => {
+    removeBook: async (_, { book }, context) => {
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: context.user._id },
@@ -98,8 +93,7 @@ const resolvers = {
         );
       }
       throw new AuthenticationError('Not authenticated');
-    },
-
+    }
   }
 };
 
