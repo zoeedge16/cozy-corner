@@ -81,3 +81,13 @@ export const CREATE_POST = gql`
     }
   }
 `;
+
+export const CREATE_COMMENT = gql`
+  mutation createComment($postId: ID!, $content: String!) {
+    createComment(postId: $postId, content: $content) {
+      id
+      content
+      createdAt
+    }
+  }
+`;

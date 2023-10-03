@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('@apollo/server');
-const { User, UserPreferences, ReadingPreferences } = require('../models');
+const { User, UserPreferences, ReadingPreferences, Comment, Post } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -80,6 +80,25 @@ const resolvers = {
         const time = new Date().toISOString();
         const newPost = { id: userId, content, time };
         return newPost;
+      }
+      throw new AuthenticationError('Not authenticated');
+    }, 
+
+    createComment: async (_, { postId, content }, context) => {
+      if (context.user) {
+        try {
+          const newComment = new Comment({
+            postId,
+            content,
+            createdAt: new Date().toISOString()
+          });
+    
+          const savedComment = await newComment.save();
+    
+          return savedComment;
+        } catch (error) {
+          throw new Error('Could not create comment');
+        }
       }
       throw new AuthenticationError('Not authenticated');
     }, 
