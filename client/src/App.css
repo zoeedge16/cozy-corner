@@ -62,7 +62,11 @@
 }
 
 #carousel:hover .carousel-img {
-  filter: blur(15px);
+  filter: blur(5px);
+}
+
+#carousel{
+  border: solid 2px #D3D5D4;
 }
 
 .carousel-img {
@@ -73,7 +77,7 @@
 
 .carousel-caption {
   background-color: black;
-  opacity: 0.8;
+  opacity: 0.9;
   border-radius: 10px;
   visibility: hidden;
   transition: transform 0.5s;
@@ -167,4 +171,32 @@
 .card-btn {
   background-color: #9DB5B2 !important;
   border: none !important;
+  margin-top: 5px;
+  border-radius: 10px;
+}
+
+.schedule-text {
+  color: #7F6A93;
+}
+
+.pref-input {
+  background-color: white !important;
+  color: #7F6A93 !important;
+  font-weight: bold !important;
+  border: solid 2px #9DB5B2 !important;
+  border-radius: 10px;
+}
+
+.pref-btn {
+  background-color: #9DB5B2 !important;
+  border: none !important;
+  margin-top: 5px;
+  border-radius: 10px;
+}
+
+.page-header {
+  padding-bottom: 20px;
+  color: #7F6A93;
+  font-weight: bold;
+  border-bottom: 1px solid #D3D5D4;
 }

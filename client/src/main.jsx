@@ -41,7 +41,7 @@ const router = createBrowserRouter([
         element: <SearchResults />
       },
       {
-        path: '/readingPreferences',
+        path: '/reading-preferences',
         element: <ReadingPreferences />
       }
     ]
