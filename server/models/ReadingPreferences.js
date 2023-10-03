@@ -7,29 +7,17 @@ const readingPreferences = new Schema ({
         required: true,
         unique: true
     },
-    booksAYear: {
+    totalPages: {
+        type: Number,
+        required: true,
+    },
+    daysToRead: {
         type: Number,
         required: true
     },
-    daysAWeek: {
+    dailyPageGoal: {
         type: Number,
         required: true
-    },
-    dayToRead: {
-        type: String,
-        required: true
-    },
-    hoursToRead: {
-        type: Number,
-        required: true
-    },
-    pagesToRead: {
-        type: Number,
-        required: false
-    },
-    chaptersToRead: {
-        type: Number,
-        required: false
     }
 });
 

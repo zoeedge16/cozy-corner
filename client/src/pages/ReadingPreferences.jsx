@@ -1,20 +1,16 @@
 import { useState } from 'react';
 
 function ReadingPreferencesPage() {
-    const [booksPerYear, setBooksPerYear] = useState(0);
-    const [daysPerWeek, setDaysPerWeek] = useState(0);
-    const [readDay, setReadDay] = useState(0);
-    const [hoursPerDay, setHoursPerDay] = useState(0);
-    const [startTime, setStartTime] = useState('');
+    const [totalPages, setTotalPages] = useState(0);
+    const [daysToRead, setDaysToRead] = useState(0);
+    const [dailyPageGoal, setPageGoal] = useState(0);
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
         console.log({
-            booksPerYear,
-            daysPerWeek,
-            readDay,
-            hoursPerDay,
-            startTime,
+            totalPages,
+            daysToRead,
+            dailyPageGoal
         });
     };
 
@@ -23,54 +19,34 @@ function ReadingPreferencesPage() {
             <h1 className="text-3x1 font-bold mb-4">Reading Preferences</h1>
             <form onSubmit={handleFormSubmit}>
                 <label>
-                    How many books would you like to read in a year?
+                    How many pages a day would you like to read?
                     <input 
                     type="number"
-                    value={booksPerYear}
-                    onChange={(e) => setBooksPerYear(e.target.value)}
+                    value={dailyPageGoal}
+                    onChange={(e) => setPageGoal(e.target.value)}
                     />    
                 </label>
                 <br />
 
                 <label>
-                    How many days a week would you like to read?
+                    How many pages are in your book?
                     <input 
                     type="number"
-                    value={daysPerWeek}
-                    onChange={(e) => setDaysPerWeek(e.target.value)}
+                    value={totalPages}
+                    onChange={(e) => setTotalPages(e.target.value)}
                     />
                 </label>
                 <br />
 
                 <label>
-                    On what day would you like to read?
-                    <input
-                    type="text"
-                    value={readDay}
-                    onChange={(e) => setReadDay(e.target.value)}
-                    />
-                </label>
-                <br />
-
-                <label>
-                    How many hours would you like to read per day?
+                    How many days will you be reading your book?
                     <input
                     type="number"
-                    value="hoursPerDay"
-                    onChange={(e) => setHoursPerDay(e.target.value)}
+                    value={daysToRead}
+                    onChange={(e) => setDaysToRead(e.target.value)}
                     />
                 </label>
-                <br />
-
-                <label>
-                    What time of day would you like to start reading?
-                    <input
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    />
-                </label>
-                <br />  
+                <br /> 
 
                 <button 
                 type="submit"

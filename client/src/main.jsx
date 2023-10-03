@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup.jsx';
 import SearchResults from './pages/SearchResults';
+import ReadingPreferences from './pages/ReadingPreferences';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        index: true,
+        path: '/',
         element: <Home />
       }, {
         path: '/login',
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
         path: '/search-results',
         element: <SearchResults />
       },
+      {
+        path: '/readingPreferences',
+        element: <ReadingPreferences />
+      }
     ]
   }
 ])
