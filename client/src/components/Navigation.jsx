@@ -70,6 +70,7 @@ function Navigation() {
                 <Nav className="me-2 d-flex justify-content-between">
                     <Container className="d-flex justify-content-end align-items-center">
                         <Link to='/' className='m-2 p-2'>Home</Link>
+                        <Link to='/reading-preferences' className='m-2 p-2'>Preferences</Link>
                         <Link to="/me" className='m-2 p-2'>
                           Profile
                         </Link>
