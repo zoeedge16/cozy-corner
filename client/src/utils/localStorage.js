@@ -28,3 +28,23 @@ export const removeBookId = (bookId) => {
 
   return true;
 };
+
+export const getSavedPosts = () => {
+  const savedPosts = localStorage.getItem('saved_posts')
+    ? JSON.parse(localStorage.getItem('saved_posts'))
+    : [];
+
+  return savedPosts;
+};
+
+export const savePost = (post) => {
+  const savedPosts = getSavedPosts();
+  savedPosts.push(post);
+  localStorage.setItem('saved_posts', JSON.stringify(savedPosts));
+};
+
+export const removePost = (postId) => {
+  const savedPosts = getSavedPosts();
+  const updatedSavedPosts = savedPosts.filter((post) => post.id !== postId);
+  localStorage.setItem('saved_posts', JSON.stringify(updatedSavedPosts));
+};

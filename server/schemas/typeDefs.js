@@ -40,7 +40,7 @@ type ReadingPreferences{
   }
 
   type Post {
-    id: ID!
+    id: ID
     content: String!
     time: String!
   }
