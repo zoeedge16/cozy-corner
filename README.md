@@ -12,7 +12,11 @@
 
 ## Description
 
+[Cozy Corner](https://cozy-corner-9b91c31f9b05.herokuapp.com/)
+
 Cozy Corner is a web application that helps readers connect with the reading world. These connections are made through fellow readers on the app and suggest reads based on the current popular books. The reader can also keep up with their own reading progress and see their reading history. 
+
+![Cozy Corner](./client/src/images/screenshot.png)
 
 ## Usage
 
