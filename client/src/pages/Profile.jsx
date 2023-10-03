@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { QUERY_USERS, QUERY_USER, QUERY_ME } from '../utils/queries';
 import { REMOVE_BOOK, CREATE_POST } from '../utils/mutations';
 import CommentSection from '../components/CommentSection';
@@ -57,10 +57,12 @@ const PostSection = ({ handlePostContentChange, postContent, handlePostSubmit, p
 };
 
 const Profile = () => {
-  const { id } = useParams();
+  const { userId } = useParams();
 
-  const { loading, data, error } = useQuery(id ? QUERY_USER : QUERY_ME, {
-    variables: { id },
+  console.log('Is logged in:', Auth.loggedIn());
+  
+  const { loading, data, error } = useQuery(userId ? QUERY_USER : QUERY_ME, {
+    variables: { userId: userId },
   });
 
   const { usersLoading, data: usersData } = useQuery(QUERY_USERS);
@@ -103,7 +105,7 @@ const Profile = () => {
   if (error) console.log(error);
 
   const renderCurrentUserInfo = () => {
-    if (id) return null;
+    if (userId) return null;
 
     return (
       <Container className='profile-container'>
@@ -259,15 +261,17 @@ const Profile = () => {
   };
 
   // Use React Router's `<Navigate />` component to redirect to personal profile page if username is yours
-  if (Auth.loggedIn() && Auth.getUser().data._id === userId) {
+  if (Auth.loggedIn() && Auth.getProfile().data._id === userId) {
     return <Navigate to="/me" />;
   }
-
+  
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!user?.name) {
+  console.log('User data:', user);
+
+  if (!user?.username) {
     return (
       <h4>
         You need to be logged in to see your profile page. Use the navigation
@@ -278,18 +282,26 @@ const Profile = () => {
 
   return (
     <div>
-      <div>
-        <h2 className='login-header'>
-          Viewing {id ? `${user.username}'s` : 'your'} Profile.
-        </h2>
-        {renderCurrentUserInfo()}
-      </div>
+      <Container className='profile-container'>
+        <Row className='justify-content-center'>
+          <Col xs={12} md={6}>
+            <img src={avatar} alt="avatar" id='avatar' />
+            <ul>
+              <li>username: {user.username}</li>
+              <li>email: {user.email}</li>
+            </ul>
+          </Col>
+        </Row>
+      </Container>
+  
       <div>
         {savedBooks()}
       </div>
+  
       <div>
         {readBooks()}
       </div>
+  
       <div>
         <PostSection
           handlePostContentChange={handlePostContentChange}
@@ -299,7 +311,7 @@ const Profile = () => {
         />
       </div>
     </div>
-  );
+  );  
 };
 
 export default Profile;
