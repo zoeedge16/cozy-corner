@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { searchGoogleBooks } from '../utils/API';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 
 function SearchResults() {
     const location = useLocation();
@@ -35,21 +36,42 @@ function SearchResults() {
         fetchSearchResults();
     }, [searchQuery]);
 
+    const handleDescriptionLength = (text, maxLength) => {
+      if (text.length <= maxLength) {
+        return text;
+      }
+    
+      const shortenedText = text.substring(0, maxLength - 3) + '...';
+      return shortenedText;
+    };
+
   return (
-    <div>
-      <h1>Search Results</h1>
-      {searchResults.map((result) => (
-        <div key={result.bookId}>
-          <h2>{result.title}</h2>
-          <p>Authors: {result.authors.join(', ')}</p>
-          <p>Description: {result.description}</p>
-          <img src={result.image} alt={result.title} />
-          <a href={result.link} target="_blank" rel="noopener noreferrer">
-            More Info
-          </a>
-        </div>
-      ))}
-    </div>
+    <Container>
+      <h1 className='mb-5'>Search Results</h1>
+      <Container className='mt-5 mb-5 fade-in'>
+        <Row className='d-flex justify-content-center'>
+          {searchResults.map((result) => (
+            <Col key={result.bookId} xs={12} md={4} className='d-flex justify-content-center mt-3 mb-3'>
+              <Card style={{ width: '36rem', height: '36rem', backgroundColor: '#D3D5D4' }}>
+                <Card.Img variant="top" className='card-img' alt={result.title} src={result.image} />
+                <Card.Body>
+                  <Card.Title>{result.title}</Card.Title>
+                  <Card.Text>
+                    {result.authors.join(', ')}
+                  </Card.Text>
+                  <Card.Text className='card-description'>
+                    {handleDescriptionLength(result.description, 150)}
+                  </Card.Text>
+                  <Link to={result.link}>
+                    <Button className='card-btn'>More Info</Button>
+                  </Link>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </Container>
   );
 }
 
