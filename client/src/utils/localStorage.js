@@ -48,3 +48,24 @@ export const removePost = (postId) => {
   const updatedSavedPosts = savedPosts.filter((post) => post.id !== postId);
   localStorage.setItem('saved_posts', JSON.stringify(updatedSavedPosts));
 };
+
+export const getSavedComments = () => {
+  const savedComments = localStorage.getItem('saved_comments')
+    ? JSON.parse(localStorage.getItem('saved_comments'))
+    : [];
+
+  return savedComments;
+};
+
+export const saveComment = (comment) => {
+  const savedComments = getSavedComments();
+  savedComments.push(comment);
+  localStorage.setItem('saved_comments', JSON.stringify(savedComments));
+};
+
+export const removeComment = (postId) => {
+  const savedComments = getSavedComments();
+  const updatedSavedComments = savedComments.filter((comment) => comment.postId !== postId);
+  localStorage.setItem('saved_comments', JSON.stringify(updatedSavedComments));
+};
+

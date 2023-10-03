@@ -1,18 +1,22 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { QUERY_USERS, QUERY_USER, QUERY_ME } from '../utils/queries';
 import { REMOVE_BOOK, CREATE_POST } from '../utils/mutations';
-import UserList from '../components/UserList';
+import CommentSection from '../components/CommentSection';
 import { Col, Container, Row, Card, CardGroup, Button, Form } from 'react-bootstrap';
 import avatar from '../images/profile-avatar.webp';
+impo
 
-const PostSection = ({ 
-  handlePostContentChange, 
-  postContent, 
-  handlePostSubmit,
-  posts 
-}) => {
+const PostSection = ({ handlePostContentChange, postContent, handlePostSubmit, posts }) => {
+  const [showCommentBox, setShowCommentBox] = useState(false);
+  const [commentPostId, setCommentPostId] = useState(null);
+
+  const handleToggleCommentBox = (postId) => {
+    setShowCommentBox(!showCommentBox);
+    setCommentPostId(postId);
+  };
+
   return (
     <Container>
       <h2 className='login-header'>Create a Post:</h2>
@@ -26,17 +30,25 @@ const PostSection = ({
             placeholder='Write your post here...'
           />
         </Form.Group>
-        <Button variant='primary' onClick={handlePostSubmit}>
-          Post
-        </Button>
+        <Button className="search-btn d-flex justify-content-start" onClick={handlePostSubmit}>Post</Button>
       </Form>
 
-      <h2 className='login-header'>Posts:</h2>
+      <h2 className='login-header mt-4'>Posts:</h2>
       {posts.map((post, index) => (
-        <Card key={index} className='post-container mb-3'>
+        <Card key={index} className='post-container mb-3 d-flex justify-content-between'>
           <Card.Body>
-            <Card.Text>{post.content}</Card.Text>
-            <Card.Text>Posted at: {post.formattedCreatedAt}</Card.Text>
+            <div className="d-flex flex-column align-items-start">
+              <Card.Text className='h4'>{post.content}</Card.Text>
+              <Card.Text className="text-muted">Posted at: {post.formattedCreatedAt}</Card.Text>
+            </div>
+            <Button
+              variant="primary"
+              className="search-btn ml-auto"
+              onClick={() => handleToggleCommentBox(post.id)}
+            >
+              Comment
+            </Button>
+            {showCommentBox && commentPostId === post.id && <CommentSection postId={post.id} />}
           </Card.Body>
         </Card>
       ))}
@@ -60,21 +72,27 @@ const Profile = () => {
 
   const [postContent, setPostContent] = useState('');
   const [posts, setPosts] = useState([]);
-  const [textareaContent, setTextareaContent] = useState('');
 
   const handlePostContentChange = (event) => {
     setPostContent(event.target.value);
   };
 
+  const formatPostDate = (createdAt) => {
+    const date = new Date(createdAt);
+    const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+    return formattedDate;
+  };
   const handlePostSubmit = async () => {
     try {
       const { data } = await createPostMutation({
         variables: { content: postContent },
       });
-
+  
       if (data) {
         const newPost = data.createPost;
-        setPosts(prevPosts => [...prevPosts, newPost]); // Update posts state
+        newPost.formattedCreatedAt = formatPostDate(newPost.createdAt);
+        newPost.comments = [];
+        setPosts(prevPosts => [...prevPosts, newPost]);
         setPostContent('');
       }
     } catch (error) {
@@ -82,20 +100,7 @@ const Profile = () => {
     }
   };
 
-  const handleTextareaChange = (event) => {
-    setTextareaContent(event.target.value);
-  };
-
   if (error) console.log(error);
-
-  const renderUserList = () => {
-    if (usersLoading || !Array.isArray(usersData?.users)) {
-      return null;
-    }
-
-    const notMeUsers = usersData.users.filter((o) => o._id !== user._id);
-    return <UserList users={notMeUsers} title="User List" />;
-  };
 
   const renderCurrentUserInfo = () => {
     if (id) return null;
@@ -261,7 +266,6 @@ const Profile = () => {
           Viewing {id ? `${user.username}'s` : 'your'} Profile.
         </h2>
         {renderCurrentUserInfo()}
-        {renderUserList()}
       </div>
       <div>
         {savedBooks()}
